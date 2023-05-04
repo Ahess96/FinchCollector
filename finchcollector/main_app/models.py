@@ -7,17 +7,31 @@ MEALS = (
     ('D', 'Dinner')
 )
 
+class Land(models.Model):
+    location = models.CharField(max_length=50)
+    climate = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.location
+    
+    def get_absolute_url(self):
+        return reverse('lands_detail', kwargs={'pk': self.id})
+
 # Create your models here.
 class Finch(models.Model):
     name = models.CharField(max_length=100)
     breed = models.CharField(max_length=100)
     description = models.TextField(max_length=500)
+    lands = models.ManyToManyField(Land)
     
     def __str__(self):
-        return self.name
+        return f'{self.name} ({self.id})'
     
     def get_absolute_url(self):
         return reverse('detail', kwargs={'finch_id': self.id})
+    
+    def fed_for_today(self):
+        return self.feeding_set.filter(date=date.today()).count() >= len(MEALS)
     
 class Feeding(models.Model):
     date = models.DateField()

@@ -39,6 +39,53 @@
     </table>
   </div>
   <!-- New Markup Above -->
+  <hr>
+  <div class="row">
+    <div class="col s6">
+      <h3>{{ finch.name }}'s Lands</h3>
+      {% if finch.lands.count %}
+        {% for land in finch.lands.all %}
+          <div class="card">
+            <div class="card-content">
+              <span class="card-title">
+                {{ land.location }}
+              </span>
+            </div>
+            <div class="card-action">
+              <form action="{% url 'unassoc_land' finch.id land.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn">Delete</button>
+              </form>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <h5>No Lands 😿</h5>
+      {% endif %}
+    </div>
+  <!-- Available toys will come after this line -->
+  <div class="col s6">
+    <h3>Available Lands</h3>
+    {% if lands.count %}
+      {% for land in lands.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+              {{ land.location }}
+            </span>
+          </div>
+          <div class="card-action">
+            <form action="{% url 'assoc_land' finch.id land.id %}" method="POST">
+              {% csrf_token %}
+              <button type="submit" class="btn">Add</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5>{{finch.name}} Already Belongs to All Lands Available</h5>
+    {% endif %}
+  </div>
 <script>
     const dateEl = document.getElementById('id_date');
   // M is Materialize's global variable

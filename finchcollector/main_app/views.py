@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from .models import Finch
+from .models import Finch, Land
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView
 from .forms import FeedingForm
 
 # Create your views here.
@@ -19,12 +20,14 @@ def finches_index(request):
 def finches_detail(request, finch_id):
     finch = Finch.objects.get(id=finch_id)
     #instantiate Feedingform to be rendered
+    id_list = finch.lands.all().values_list('id')
+    lands_finch_doesnt_have = Land.objects.exclude(id__in=id_list)
     feeding_form = FeedingForm()
-    return render(request, 'finches/detail.html', { 'finch': finch, 'feeding_form': feeding_form })
+    return render(request, 'finches/detail.html', { 'finch': finch, 'feeding_form': feeding_form, 'lands': lands_finch_doesnt_have })
 
 class FinchCreate(CreateView):
     model = Finch
-    fields = '__all__'
+    fields = ['name', 'breed', 'description']
 
 class FinchUpdate(UpdateView):
     model = Finch
@@ -45,3 +48,29 @@ def add_feeding(request, finch_id):
     new_feeding.finch_id = finch_id
     new_feeding.save()
   return redirect('detail', finch_id=finch_id)
+
+def assoc_land(request, finch_id, land_id):
+    Finch.objects.get(id=finch_id).lands.add(land_id)
+    return redirect('detail', finch_id=finch_id)
+
+def unassoc_land(request, finch_id, land_id):
+    Finch.objects.get(id=finch_id).lands.remove(land_id)
+    return redirect('detail', finch_id=finch_id)
+
+class LandList(ListView):
+    model = Land
+
+class LandDetail(DetailView):
+    model = Land
+
+class LandCreate(CreateView):
+    model = Land
+    fields = '__all__'
+
+class LandUpdate(UpdateView):
+    model = Land
+    fields = ['location', 'climate']
+
+class LandDelete(DeleteView):
+    model = Land
+    success_url = '/lands'

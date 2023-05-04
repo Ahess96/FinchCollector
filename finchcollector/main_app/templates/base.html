@@ -5,20 +5,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
   <!-- Add the following below --->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <title>Finch Collector</title>
 </head>
 <body>
-  <header class="">
+  <header class="navbar-fixed">
     <nav>
-      <div class="">
+      <div class="nav-wrapper">
         <ul>
-          <li><a href="{% url 'index' %}">&nbsp;&nbsp;Finch Collector</a></li>
+          <li><a href="{% url 'index' %}" class="left brand-logo">&nbsp;&nbsp;Finch Collector</a></li>
         </ul>
-        <ul>
+        <ul class="right">
           <li><a href="{% url 'home' %}">About</a></li>
+          <li><a href="{% url 'lands_create' %}">Add Lands</a></li>
+          <li><a href="{% url 'lands_index' %}">View All Lands</a></li>
           <li><a href="{% url 'finches_create' %}">Add a Finch</a></li>
           <li><a href="{% url 'index' %}">All Finches</a></li>
         </ul>
@@ -29,8 +32,8 @@
     {% block content %}
     {% endblock %}
   </main>
-  <footer class="">
-    <div class="">All Rights Reserved, &copy; 2023 Finch Collector &nbsp;</div>
+  <footer class="page-footer">
+    <div class="right">All Rights Reserved, &copy; 2023 Finch Collector &nbsp;</div>
   </footer>
 </body>
 </html>

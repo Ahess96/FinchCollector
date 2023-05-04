@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Lands List</h1>
+
+{% for land in land_list %}
+  <a href="{% url 'lands_detail' land.id %}">
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">{{ land.location }}</span>
+            <p>Climate: {{ land.climate }}</p>
+        </div>
+    </div>
+  </a>
+{% endfor %}
+
+{% endblock %}
